@@ -12,6 +12,10 @@
     "James Jervis"
   ],
   "license": "BSD 2",
+  "dependencies": {
+    "AngularJS": "1.*"
+  },
+  "devDependencies": {},
   "ignore": [
     "**/.*",
     "node_modules",

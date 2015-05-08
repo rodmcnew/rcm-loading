@@ -20,93 +20,96 @@ angular.module('RcmLoading', [])
 
             var baseUrl = rcmLoadingService.getConfigValue('baseUrl', '.');
             var template = rcmLoadingService.getConfigValue('template', 'default');
-            var templateFolder = rcmLoadingService.getConfigValue('templateFolder', '/template');
+            var templateFolder = rcmLoadingService.getConfigValue(
+                'templateFolder',
+                '/template'
+            );
 
-            var templateUrl = null;
+            var url = {
+                template: null,
+                css: null
+            };
 
-            var cssUrl = null;
-
-            var buildUrls = function(template){
-                templateUrl = baseUrl + templateFolder + '/' + template + '/loading.html';
-                cssUrl = baseUrl + templateFolder + '/' + template + '/loading.css';
+            var buildUrls = function (template) {
+                url.template = baseUrl + templateFolder + '/' + template + '/loading.html';
+                url.css = baseUrl + templateFolder + '/' + template + '/loading.css';
             };
 
             buildUrls(template);
 
-            var link = function (scope, element, attrs) {
+            var compile = function (tElm, tAttr) {
 
-                /** validate me */
-                if(attrs.template){
-                    template = attrs.template;
-                    buildUrls(template);
-                }
+                return function (scope, element, attrs) {
 
-                scope.safeApply = function(fn) {
-                    var phase = this.$root.$$phase;
-                    if(phase == '$apply' || phase == '$digest')
-                        this.$eval(fn);
-                    else
-                        this.$apply(fn);
+                    scope.safeApply = function (fn) {
+                        var phase = this.$root.$$phase;
+                        if (phase == '$apply' || phase == '$digest')
+                            this.$eval(fn);
+                        else
+                            this.$apply(fn);
+                    };
+
+                    scope.cssUrl = url.css;
+
+                    var loadingMessage = rcmLoadingService.getConfigValue(
+                        'loadingMessage',
+                        'Loading..'
+                    );
+
+                    var loadingCompleteMessage = rcmLoadingService.getConfigValue(
+                        'loadingCompleteMessage',
+                        'Complete'
+                    );
+
+                    scope.isLoading = false;
+
+                    rcmLoadingService.event.on(
+                        'rcmLoadingService.loadingStart',
+                        function (loadingParams) {
+                            scope.loadingPercent = loadingParams.rcmLoading.getPercent();
+                            scope.loadingMessage = loadingMessage;
+                            scope.isLoading = true;
+
+                            scope.safeApply();
+                        },
+                        'rcmGlobalLoader',
+                        true
+                    );
+
+                    rcmLoadingService.event.on(
+                        'rcmLoadingService.loadingChange',
+                        function (loadingParams) {
+                            scope.loadingPercent = loadingParams.rcmLoading.getPercent();
+                            scope.loadingMessage = loadingMessage;
+                            scope.isLoading = true;
+
+                            scope.safeApply();
+                        },
+                        'rcmGlobalLoader',
+                        true
+                    );
+
+                    rcmLoadingService.event.on(
+                        'rcmLoadingService.loadingComplete',
+                        function (loadingParams) {
+                            scope.loadingPercent = loadingParams.rcmLoading.getPercent();
+                            scope.loadingMessage = loadingCompleteMessage;
+                            scope.isLoading = false;
+
+                            scope.safeApply();
+                        },
+                        'rcmGlobalLoader',
+                        true
+                    );
                 };
 
-                scope.cssUrl = cssUrl;
 
-                var loadingMessage = rcmLoadingService.getConfigValue(
-                    'loadingMessage',
-                    'Loading..'
-                );
-
-                var loadingCompleteMessage = rcmLoadingService.getConfigValue(
-                    'loadingCompleteMessage',
-                    'Complete'
-                );
-
-                scope.isLoading = false;
-
-                rcmLoadingService.event.on(
-                    'rcmLoadingService.loadingStart',
-                    function(loadingParams){
-                        scope.loadingPercent = loadingParams.rcmLoading.getPercent();
-                        scope.loadingMessage = loadingMessage;
-                        scope.isLoading = true;
-
-                        scope.safeApply();
-                    },
-                    'rcmGlobalLoader',
-                    true
-                );
-
-                rcmLoadingService.event.on(
-                    'rcmLoadingService.loadingChange',
-                    function(loadingParams){
-                        scope.loadingPercent = loadingParams.rcmLoading.getPercent();
-                        scope.loadingMessage = loadingMessage;
-                        scope.isLoading = true;
-
-                        scope.safeApply();
-                    },
-                    'rcmGlobalLoader',
-                    true
-                );
-
-                rcmLoadingService.event.on(
-                    'rcmLoadingService.loadingComplete',
-                    function(loadingParams){
-                        scope.loadingPercent = loadingParams.rcmLoading.getPercent();
-                        scope.loadingMessage = loadingCompleteMessage;
-                        scope.isLoading = false;
-
-                        scope.safeApply();
-                    },
-                    'rcmGlobalLoader',
-                    true
-                );
             };
 
             return {
-                link: link,
+                compile: compile,
                 scope: [],
-                templateUrl: templateUrl
+                templateUrl: url.template
             }
         }
 
