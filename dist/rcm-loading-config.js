@@ -1,6 +1,6 @@
 var rcmLoadingConfig = {
 
-    baseUrl: '/modules/rcm-loading/dist',
+    baseUrl: '/vendor/rcm-loading/dist',
     templateFolder: '/template',
     template: 'default',
     loadingMessage: 'Loading..',
