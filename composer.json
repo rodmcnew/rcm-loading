@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-
+        "reliv/rcm-js-lib": "*"
     },
     "require-dev": {
 
