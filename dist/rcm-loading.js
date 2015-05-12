@@ -35,6 +35,17 @@ var rcmLoading = {
     },
 
     /**
+     * isLoading
+     * @returns {boolean}
+     */
+    isLoading: function (name) {
+
+        var service = rcmLoading.getServiceInstance();
+
+        return service.tracker.isLoading(name);
+    },
+
+    /**
      * setLoading
      * @param name
      * @param amount
