@@ -1,3 +1,7 @@
+/**
+ * Include this file or code to:
+ * Add the angular directive element for the global loader to the DOM
+ */
 angular.element(document).ready(
     function () {
 

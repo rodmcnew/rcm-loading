@@ -25,9 +25,13 @@
     <script type="text/javascript"
             src="/vendor/rcm-js-lib/dist/rcm-event-manager.js"></script>
     <script type="text/javascript"
-            src="/vendor/rcm-loading/dist/rcm-loading-config.js"></script>
-    <script type="text/javascript"
             src="/vendor/rcm-loading/dist/rcm-loading.js"></script>
+    <script type="text/javascript"
+            src="/vendor/rcm-loading/dist/rcm-loading-default-config.js"></script>
+    <script type="text/javascript"
+            src="/vendor/rcm-loading/dist/rcm-loading-params.js"></script>
+    <script type="text/javascript"
+            src="/vendor/rcm-loading/dist/rcm-loading-tracker.js"></script>
     <script type="text/javascript"
             src="/vendor/rcm-loading/dist/rcm-loading-service.js"></script>
     <script type="text/javascript"
@@ -56,38 +60,32 @@
                     .html(message);
         };
 
-        var rcmLoadingExample = rcmLoadingService.rcmLoading;
+        var rcmLoadingService = rcmLoading.getServiceInstance();
 
-        rcmLoadingService.event.on(
-                'rcmLoadingService.loadingStart',
+        rcmLoading.onLoadingStart(
                 function (loadingParams) {
-                    //console.log('example.onLoadingStart', loadingParams);
+                    console.log('example.onLoadingStart', loadingParams);
                 },
-                'rcmLoadingExample',
-                true
+                'rcmLoadingTrackerExample'
         );
 
-        rcmLoadingService.event.on(
-                'rcmLoadingService.loadingChange',
+        rcmLoading.onLoadingChange(
                 function (loadingParams) {
-                    updateLoaderBar('.total', loadingParams.rcmLoading.getPercent());
-                    //console.log('example.onLoadingStart', loadingParams);
+                    updateLoaderBar('.total', loadingParams.tracker.getPercent());
+                    console.log('example.loadingChange', loadingParams);
                 },
-                'rcmLoadingExample',
-                true
+                'rcmLoadingTrackerExample'
         );
 
-        rcmLoadingService.event.on(
-                'rcmLoadingService.loadingComplete',
+        rcmLoading.onLoadingComplete(
                 function (loadingParams) {
-                    updateLoaderBar('.total', loadingParams.rcmLoading.getPercent());
-                    //console.log('example.onLoadingStart', loadingParams);
+                    updateLoaderBar('.total', loadingParams.tracker.getPercent());
+                    console.log('example.loadingComplete', loadingParams);
                 },
-                'rcmLoadingExample',
-                true
+                'rcmLoadingTrackerExample'
         );
 
-        var rcmLoadingExampleInit = function () {
+        var rcmLoadingTrackerInit = function () {
 
             updateLoaderBar('.test1', 0);
             updateLoaderBar('.test2', 0);
@@ -95,7 +93,7 @@
             /**
              * Starting to load
              */
-            rcmLoadingExample.setLoading(
+            rcmLoading.setLoading(
                     'test1',
                     0,
                     {
@@ -116,8 +114,8 @@
              */
             window.setTimeout(
                     function () {
-                        rcmLoadingExample.setLoading('test1', .25);
-                        rcmLoadingExample.setLoading(
+                        rcmLoading.setLoading('test1', .25);
+                        rcmLoading.setLoading(
                                 'test2',
                                 0,
                                 {
@@ -144,23 +142,23 @@
 
             window.setTimeout(
                     function () {
-                        rcmLoadingExample.setLoading('test1', .5);
-                        rcmLoadingExample.setLoading('test2', .33);
+                        rcmLoading.setLoading('test1', .5);
+                        rcmLoading.setLoading('test2', .33);
                     },
                     2000
             );
 
             window.setTimeout(
                     function () {
-                        rcmLoadingExample.setLoading('test1', 1);
-                        rcmLoadingExample.setLoading('test2', .66);
+                        rcmLoading.setLoading('test1', 1);
+                        rcmLoading.setLoading('test2', .66);
                     },
                     3000
             );
 
             window.setTimeout(
                     function () {
-                        rcmLoadingExample.setLoading('test2', 1);
+                        rcmLoading.setLoading('test2', 1);
                     },
                     4000
             );
@@ -216,7 +214,7 @@
         </div>
         <button type="button"
                 class="btn btn-primary"
-                onclick="rcmLoadingExampleInit()">Test Loading
+                onclick="rcmLoadingTrackerInit()">Test Loading
         </button>
     </div>
     <div>
@@ -226,31 +224,31 @@
 
         <code>
             <pre>
-rcmLoadingService.rcmLoading.setLoading(
-        'my-loading-name',                      // Unique name for your loading bit
-        0,
-        {
-                                                // Fires when my-loading-name changes
-            onChange: function (params) {
-                                                // Update something onChange
-                myPercent = params.getPercent();
-                myText = 'Loading';
-            },
-                                                // Fires when my-loading-name completes
-            onComplete: function (params) {
-                //update something onComplete
-                myPercent = params.getPercent();
-                myText = 'Complete';
-            }
+rcmLoading.setLoading(
+    'my-loading-name',                      // Unique name for your loading bit
+    0,
+    {
+                                            // Fires when my-loading-name changes
+        onChange: function (params) {
+                                            // Update something onChange
+            myPercent = params.getPercent();
+            myText = 'Loading';
+        },
+                                            // Fires when my-loading-name completes
+        onComplete: function (params) {
+                                            //update something onComplete
+            myPercent = params.getPercent();
+            myText = 'Complete';
         }
+    }
 );
             </pre>
         </code>
         <h5>Fire this to trigger 50% complete</h5>
         <code>
             <pre>
-rcmLoadingService.rcmLoading.setLoading(
-    'my-loading-name',                          // Unique name for your loading instance
+rcmLoading.setLoading(
+    'my-loading-name',                      // Unique name for your loading instance
     .5
 );
             </pre>
@@ -258,8 +256,8 @@ rcmLoadingService.rcmLoading.setLoading(
         <h5>Fire this to trigger loading complete</h5>
         <code>
             <pre>
-rcmLoadingService.rcmLoading.setLoading(
-    'my-loading-name',                          // Unique name for your loading bit
+rcmLoading.setLoading(
+    'my-loading-name',                      // Unique name for your loading bit
     1
 );
             </pre>
@@ -267,13 +265,12 @@ rcmLoadingService.rcmLoading.setLoading(
         <h5>To track global loading status, use the events</h5>
         <code>
             <pre>
-rcmLoadingService.event.on(
-        'rcmLoadingService.loadingStart',       // Other events: 'rcmLoadingService.loadingChange' 'rcmLoadingService.loadingComplete'
-        function (loadingParams) {
-                                                // Do your stuf here
-        },
-        'my-event-name',                        // Unique name for your loading event
-        true,                                   // This will alloe the event to trigger now if the event has already triggered
+rcmLoading.onLoadingStart(
+    function (loadingParams) {
+                                            // Do your stuf here, like get the total percent
+        loadingParams.tracker.getPercent();
+    },
+    'my-event-name',                        // Unique name for your loading event
 );
             </pre>
         </code>

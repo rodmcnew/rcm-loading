@@ -6,39 +6,67 @@
  * @param rcmLoading
  * @constructor
  */
-var RcmLoadingService = function(config) {
+rcmLoading.Service = function(config) {
 
     var self = this;
 
-    self.config = config;
+    self.config = {};
 
-    self.rcmLoading = null; //;
+    self.tracker = null; //;
 
-    self.event = new RcmEventManager();
+    self.events = new RcmEventManager();
 
     var onLoadingStart = function(loadingParams){
-        self.event.trigger('rcmLoadingService.loadingStart', loadingParams);
+        self.events.trigger('rcmLoadingService.loadingStart', loadingParams);
     };
     var onLoadingChange = function(loadingParams){
-        self.event.trigger('rcmLoadingService.loadingChange', loadingParams);
+        self.events.trigger('rcmLoadingService.loadingChange', loadingParams);
     };
     var onLoadingComplete = function(loadingParams){
-        self.event.trigger('rcmLoadingService.loadingComplete', loadingParams);
+        self.events.trigger('rcmLoadingService.loadingComplete', loadingParams);
     };
 
-    self.init = function(){
-        self.rcmLoading = new RcmLoading(
+    /**
+     * init
+     * @param config
+     */
+    self.init = function(config){
+
+        self.config = config;
+
+        self.tracker = new rcmLoading.Tracker(
             onLoadingStart,
             onLoadingChange,
             onLoadingComplete
         )
     };
 
-    self.getRcmLoading = function() {
+    /**
+     * loading - Set or change loading status
+     * @param name unique namespace for this loading event
+     * @param amount Loading amount between 0 and 1
+     * @param {object} options optional
+     */
+    self.setLoading = function (name, amount, options) {
 
-        return self.rcmLoading;
+        self.tracker.setLoading(name, amount, options);
     };
 
+    /**
+     * getTracker
+     * @returns {null|*}
+     */
+    self.getTracker = function() {
+
+        return self.tracker;
+    };
+
+    /**
+     * getConfigValue
+     * @param key
+     * @param defaultValue
+     * @returns {*}
+     */
     self.getConfigValue = function(key, defaultValue){
 
         if(typeof self.config[key] !== 'undefined'){
@@ -48,7 +76,5 @@ var RcmLoadingService = function(config) {
         return defaultValue;
     };
 
-    self.init();
+    self.init(config);
 };
-
-var rcmLoadingService = new RcmLoadingService(rcmLoadingConfig);

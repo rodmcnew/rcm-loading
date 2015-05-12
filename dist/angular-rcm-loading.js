@@ -9,7 +9,7 @@ angular.module('RcmLoading', [])
     'rcmLoadingService',
     function () {
 
-        return rcmLoadingService;
+        return rcmLoading.getServiceInstance();
     }
 )
     .directive(
@@ -63,10 +63,10 @@ angular.module('RcmLoading', [])
 
                     scope.isLoading = false;
 
-                    rcmLoadingService.event.on(
+                    rcmLoadingService.events.on(
                         'rcmLoadingService.loadingStart',
                         function (loadingParams) {
-                            scope.loadingPercent = loadingParams.rcmLoading.getPercent();
+                            scope.loadingPercent = loadingParams.tracker.getPercent();
                             scope.loadingMessage = loadingMessage;
                             scope.isLoading = true;
 
@@ -76,10 +76,10 @@ angular.module('RcmLoading', [])
                         true
                     );
 
-                    rcmLoadingService.event.on(
+                    rcmLoadingService.events.on(
                         'rcmLoadingService.loadingChange',
                         function (loadingParams) {
-                            scope.loadingPercent = loadingParams.rcmLoading.getPercent();
+                            scope.loadingPercent = loadingParams.tracker.getPercent();
                             scope.loadingMessage = loadingMessage;
                             scope.isLoading = true;
 
@@ -89,10 +89,10 @@ angular.module('RcmLoading', [])
                         true
                     );
 
-                    rcmLoadingService.event.on(
+                    rcmLoadingService.events.on(
                         'rcmLoadingService.loadingComplete',
                         function (loadingParams) {
-                            scope.loadingPercent = loadingParams.rcmLoading.getPercent();
+                            scope.loadingPercent = loadingParams.tracker.getPercent();
                             scope.loadingMessage = loadingCompleteMessage;
                             scope.isLoading = false;
 
