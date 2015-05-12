@@ -8,8 +8,8 @@ module.exports = function (grunt) {
                 dist : {
                     options: {
                         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
-                        mangle: true,
-                        sourceMap: false,
+                        mangle: false,
+                        sourceMap: true,
                         sourceMapName: 'dist/<%= pkg.name %>.map'
                     },
                     files: {
@@ -53,6 +53,7 @@ module.exports = function (grunt) {
     // Load the plugin that provides the "uglify" task.
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-concat');
 
     // Default task(s).
     grunt.registerTask('default', ['uglify', 'copy', 'concat']);
