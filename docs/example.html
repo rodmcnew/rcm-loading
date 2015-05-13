@@ -67,6 +67,9 @@
 
         var rcmLoadingService = rcmLoading.getServiceInstance();
 
+        /**
+         * Listen for global start event
+         */
         rcmLoading.onLoadingStart(
                 function (loadingParams) {
                     console.log('example.onLoadingStart', loadingParams);
@@ -74,6 +77,9 @@
                 'rcmLoadingTrackerExample'
         );
 
+        /**
+         * Listen for change global event
+         */
         rcmLoading.onLoadingChange(
                 function (loadingParams) {
                     updateLoaderBar('.total', loadingParams.tracker.getPercent());
@@ -82,12 +88,27 @@
                 'rcmLoadingTrackerExample'
         );
 
+        /**
+         * Listen for complete global event
+         */
         rcmLoading.onLoadingComplete(
                 function (loadingParams) {
                     updateLoaderBar('.total', loadingParams.tracker.getPercent());
                     console.log('example.loadingComplete', loadingParams);
                 },
                 'rcmLoadingTrackerExample'
+        );
+
+        /**
+         * Listen for custom event
+         */
+        rcmLoading.getServiceInstance().events.on(
+                'myCustomChangeEvent.test1',
+                function (params) {
+                    console.log('myCustomChangeEvent.test1', params);
+                },
+                'changeEvent.test1.listener1',
+                true
         );
 
         var rcmLoadingTrackerInit = function () {
