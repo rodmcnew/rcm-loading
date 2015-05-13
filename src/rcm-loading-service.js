@@ -16,14 +16,53 @@ rcmLoading.Service = function(config) {
 
     self.events = new RcmEventManager();
 
+    self.eventNames = {
+        start: 'rcmLoadingService.loadingStart',
+        change: 'rcmLoadingService.loadingChange',
+        complete: 'rcmLoadingService.loadingComplete'
+    };
+
     var onLoadingStart = function(loadingParams){
-        self.events.trigger('rcmLoadingService.loadingStart', loadingParams);
+        self.events.trigger(self.eventNames.start, loadingParams);
     };
     var onLoadingChange = function(loadingParams){
-        self.events.trigger('rcmLoadingService.loadingChange', loadingParams);
+        self.events.trigger(self.eventNames.change, loadingParams);
     };
     var onLoadingComplete = function(loadingParams){
-        self.events.trigger('rcmLoadingService.loadingComplete', loadingParams);
+        self.events.trigger(self.eventNames.complete, loadingParams);
+    };
+
+    var triggerNamedStart = function(name, amount, options){
+        self.events.trigger(
+            self.eventNames.start + '.' + loadingParams.name,
+            {
+                amount: amount,
+                name: name,
+                tracker: self.tracker
+            }
+        );
+    };
+
+    var triggerNamedChange = function(name, amount, options){
+        self.events.trigger(
+            self.eventNames.start + '.' + loadingParams.name,
+            {
+                amount: amount,
+                name: name,
+                tracker: self.tracker
+            }
+        );
+    };
+
+    var triggerNamedComplete = function(name, amount, options){
+        self.events.trigger(
+            self.eventNames.start + '.' + loadingParams.name,
+            {
+                amount: amount,
+                name: name,
+                tracker: self.tracker
+            }
+        );
     };
 
     /**
@@ -50,6 +89,8 @@ rcmLoading.Service = function(config) {
     self.setLoading = function (name, amount, options) {
 
         self.tracker.setLoading(name, amount, options);
+
+
     };
 
     /**

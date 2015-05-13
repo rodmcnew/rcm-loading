@@ -25,13 +25,22 @@ var rcmLoading = {
             return rcmLoading.serviceInstance;
         }
 
+        rcmLoading.buildServiceInstance(config);
+
+        return rcmLoading.serviceInstance;
+    },
+
+    /**
+     * buildServiceInstance
+     * @param config
+     */
+    buildServiceInstance: function (config) {
+
         if (!config) {
             config = rcmLoading.defaultConfig;
         }
 
         rcmLoading.serviceInstance = new rcmLoading.Service(config);
-
-        return rcmLoading.serviceInstance;
     },
 
     /**
