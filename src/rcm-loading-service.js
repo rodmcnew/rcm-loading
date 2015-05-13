@@ -32,39 +32,6 @@ rcmLoading.Service = function(config) {
         self.events.trigger(self.eventNames.complete, loadingParams);
     };
 
-    var triggerNamedStart = function(name, amount, options){
-        self.events.trigger(
-            self.eventNames.start + '.' + loadingParams.name,
-            {
-                amount: amount,
-                name: name,
-                tracker: self.tracker
-            }
-        );
-    };
-
-    var triggerNamedChange = function(name, amount, options){
-        self.events.trigger(
-            self.eventNames.start + '.' + loadingParams.name,
-            {
-                amount: amount,
-                name: name,
-                tracker: self.tracker
-            }
-        );
-    };
-
-    var triggerNamedComplete = function(name, amount, options){
-        self.events.trigger(
-            self.eventNames.start + '.' + loadingParams.name,
-            {
-                amount: amount,
-                name: name,
-                tracker: self.tracker
-            }
-        );
-    };
-
     /**
      * init
      * @param config
