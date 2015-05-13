@@ -67,6 +67,9 @@
 
         var rcmLoadingService = rcmLoading.getServiceInstance();
 
+        /**
+         * Listen for global start event
+         */
         rcmLoading.onLoadingStart(
                 function (loadingParams) {
                     console.log('example.onLoadingStart', loadingParams);
@@ -74,6 +77,9 @@
                 'rcmLoadingTrackerExample'
         );
 
+        /**
+         * Listen for change global event
+         */
         rcmLoading.onLoadingChange(
                 function (loadingParams) {
                     updateLoaderBar('.total', loadingParams.tracker.getPercent());
@@ -82,12 +88,27 @@
                 'rcmLoadingTrackerExample'
         );
 
+        /**
+         * Listen for complete global event
+         */
         rcmLoading.onLoadingComplete(
                 function (loadingParams) {
                     updateLoaderBar('.total', loadingParams.tracker.getPercent());
                     console.log('example.loadingComplete', loadingParams);
                 },
                 'rcmLoadingTrackerExample'
+        );
+
+        /**
+         * Listen for custom event
+         */
+        rcmLoading.getServiceInstance().events.on(
+                'myCustomChangeEvent.test1',
+                function (params) {
+                    console.log('myCustomChangeEvent.test1', params);
+                },
+                'changeEvent.test1.listener1',
+                true
         );
 
         var rcmLoadingTrackerInit = function () {
@@ -105,6 +126,8 @@
                         onChange: function (params) {
                             //console.log('onChange test1', params);
                             updateLoaderBar('.test1', params.getPercent());
+                            // Trigger a custom event
+                            rcmLoading.getServiceInstance().events.trigger('myCustomChangeEvent.test1',params);
 
                         },
                         onComplete: function (params) {
@@ -235,12 +258,17 @@ rcmLoading.setLoading(
     {
                                             // Fires when my-loading-name changes
         onChange: function (params) {
+
                                             // Update something onChange
             myPercent = params.getPercent();
             myText = 'Loading';
+
+                                            // Trigger a custom event
+            rcmLoading.getServiceInstance().events.trigger('myCustomChangeEvent.test1',params);
         },
                                             // Fires when my-loading-name completes
         onComplete: function (params) {
+
                                             //update something onComplete
             myPercent = params.getPercent();
             myText = 'Complete';
@@ -262,7 +290,7 @@ rcmLoading.setLoading(
         <code>
             <pre>
 rcmLoading.setLoading(
-    'my-loading-name',                      // Unique name for your loading bit
+    'my-loading-name',                      // Unique name for your loading instance
     1
 );
             </pre>

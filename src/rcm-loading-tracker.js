@@ -32,8 +32,8 @@ rcmLoading.Tracker = function (
      */
     self.isLoading = function (name) {
 
-        if(name && self.has(name)){
-            return (self.getLoading(name) < 1)
+        if(name){
+            return (self.getLoading(name) < 1 && self.has(name))
         }
 
         return (self.loadingAmount < 1);
@@ -56,6 +56,11 @@ rcmLoading.Tracker = function (
         self.calc();
     };
 
+    /**
+     * getLoading
+     * @param name
+     * @returns {*}
+     */
     self.getLoading = function (name) {
 
         if(!self.has(name)){

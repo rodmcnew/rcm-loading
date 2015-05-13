@@ -15,9 +15,8 @@ var rcmLoading = {
 
     /**
      * getServiceInstance
-     * @param instanceId
      * @param config
-     * @returns {*}
+     * @returns {{}|rcmLoading.serviceInstance|*}
      */
     getServiceInstance: function (config) {
 
@@ -45,7 +44,8 @@ var rcmLoading = {
 
     /**
      * isLoading
-     * @returns {boolean}
+     * @param name Optional
+     * @returns {*}
      */
     isLoading: function (name) {
 
@@ -64,7 +64,7 @@ var rcmLoading = {
 
         var service = rcmLoading.getServiceInstance();
 
-        service.tracker.setLoading(name, amount, options);
+        service.setLoading(name, amount, options);
     },
 
     /**
@@ -213,8 +213,8 @@ rcmLoading.Tracker = function (
      */
     self.isLoading = function (name) {
 
-        if(name && self.has(name)){
-            return (self.getLoading(name) < 1)
+        if(name){
+            return (self.getLoading(name) < 1 && self.has(name))
         }
 
         return (self.loadingAmount < 1);
@@ -237,6 +237,11 @@ rcmLoading.Tracker = function (
         self.calc();
     };
 
+    /**
+     * getLoading
+     * @param name
+     * @returns {*}
+     */
     self.getLoading = function (name) {
 
         if(!self.has(name)){
@@ -405,14 +410,20 @@ rcmLoading.Service = function(config) {
 
     self.events = new RcmEventManager();
 
+    self.eventNames = {
+        start: 'rcmLoadingService.loadingStart',
+        change: 'rcmLoadingService.loadingChange',
+        complete: 'rcmLoadingService.loadingComplete'
+    };
+
     var onLoadingStart = function(loadingParams){
-        self.events.trigger('rcmLoadingService.loadingStart', loadingParams);
+        self.events.trigger(self.eventNames.start, loadingParams);
     };
     var onLoadingChange = function(loadingParams){
-        self.events.trigger('rcmLoadingService.loadingChange', loadingParams);
+        self.events.trigger(self.eventNames.change, loadingParams);
     };
     var onLoadingComplete = function(loadingParams){
-        self.events.trigger('rcmLoadingService.loadingComplete', loadingParams);
+        self.events.trigger(self.eventNames.complete, loadingParams);
     };
 
     /**
@@ -439,6 +450,8 @@ rcmLoading.Service = function(config) {
     self.setLoading = function (name, amount, options) {
 
         self.tracker.setLoading(name, amount, options);
+
+
     };
 
     /**

@@ -15,9 +15,8 @@ var rcmLoading = {
 
     /**
      * getServiceInstance
-     * @param instanceId
      * @param config
-     * @returns {*}
+     * @returns {{}|rcmLoading.serviceInstance|*}
      */
     getServiceInstance: function (config) {
 
@@ -45,7 +44,8 @@ var rcmLoading = {
 
     /**
      * isLoading
-     * @returns {boolean}
+     * @param name Optional
+     * @returns {*}
      */
     isLoading: function (name) {
 
@@ -64,7 +64,7 @@ var rcmLoading = {
 
         var service = rcmLoading.getServiceInstance();
 
-        service.tracker.setLoading(name, amount, options);
+        service.setLoading(name, amount, options);
     },
 
     /**
