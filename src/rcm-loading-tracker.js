@@ -88,9 +88,15 @@ rcmLoading.Tracker = function (
      */
     self.add = function (name, amount, options) {
 
+        if(!options){
+            options = {};
+        }
+
+        options.name = name;
+        options.amount = amount;
+
         var params = new rcmLoading.Params(options);
-        params.name = name;
-        params.amount = amount;
+
         self.loadingAggregate[name] = params;
     };
 

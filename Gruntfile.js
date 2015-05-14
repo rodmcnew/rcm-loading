@@ -21,7 +21,7 @@ module.exports = function (grunt) {
                             'src/rcm-loading-service.js'
                         ],
                         'dist/angular-rcm-loading.js': ['src/angular-rcm-loading.js'],
-                        'dist/inject-loading-element.js': ['src/inject-loading-element.js']
+                        'dist/jquery-loader.js': ['src/jquery-loader.js']
                     }
                 }
             },

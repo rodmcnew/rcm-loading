@@ -6,7 +6,7 @@
  * @param rcmLoading
  * @constructor
  */
-rcmLoading.Service = function(config) {
+rcmLoading.Service = function (config) {
 
     var self = this;
 
@@ -22,13 +22,13 @@ rcmLoading.Service = function(config) {
         complete: 'rcmLoadingService.loadingComplete'
     };
 
-    var onLoadingStart = function(loadingParams){
+    var onLoadingStart = function (loadingParams) {
         self.events.trigger(self.eventNames.start, loadingParams);
     };
-    var onLoadingChange = function(loadingParams){
+    var onLoadingChange = function (loadingParams) {
         self.events.trigger(self.eventNames.change, loadingParams);
     };
-    var onLoadingComplete = function(loadingParams){
+    var onLoadingComplete = function (loadingParams) {
         self.events.trigger(self.eventNames.complete, loadingParams);
     };
 
@@ -36,7 +36,7 @@ rcmLoading.Service = function(config) {
      * init
      * @param config
      */
-    self.init = function(config){
+    self.init = function (config) {
 
         self.config = config;
 
@@ -64,7 +64,7 @@ rcmLoading.Service = function(config) {
      * getTracker
      * @returns {null|*}
      */
-    self.getTracker = function() {
+    self.getTracker = function () {
 
         return self.tracker;
     };
@@ -75,13 +75,33 @@ rcmLoading.Service = function(config) {
      * @param defaultValue
      * @returns {*}
      */
-    self.getConfigValue = function(key, defaultValue){
+    self.getConfigValue = function (key, defaultValue) {
 
-        if(typeof self.config[key] !== 'undefined'){
+        if (typeof self.config[key] !== 'undefined') {
             return self.config[key]
         }
 
         return defaultValue;
+    };
+
+    /**
+     * getTemplateUrl
+     * returns {string}
+     */
+    self.getTemplateUrl = function (file) {
+
+        if (!file) {
+            file = '';
+        }
+
+        var baseUrl = self.getConfigValue('baseUrl', '.');
+        var template = self.getConfigValue('template', 'default');
+        var templateFolder = self.getConfigValue(
+            'templateFolder',
+            '/template'
+        );
+
+        return baseUrl + templateFolder + '/' + template + '/' + file;
     };
 
     self.init(config);

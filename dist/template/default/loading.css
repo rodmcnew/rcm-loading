@@ -3,10 +3,11 @@
     position: fixed; top:0; left: 0;
     width: 100%;
     height: 100%;
+    z-index: 50000; /* Just in case */
 }
 .rcm-loading .loading {
     /*overflow: hidden;*/
-    padding-top: 5em;
+    padding-top: 15em;
     position: fixed; left: 0;
     width: 100%;
 }

@@ -18,24 +18,10 @@ angular.module('RcmLoading', [])
         'rcmLoadingService',
         function (rcmLoadingService) {
 
-            var baseUrl = rcmLoadingService.getConfigValue('baseUrl', '.');
-            var template = rcmLoadingService.getConfigValue('template', 'default');
-            var templateFolder = rcmLoadingService.getConfigValue(
-                'templateFolder',
-                '/template'
-            );
-
             var url = {
-                template: null,
-                css: null
+                template: rcmLoadingService.getTemplateUrl('loading.html'),
+                css: rcmLoadingService.getTemplateUrl('loading.css')
             };
-
-            var buildUrls = function (template) {
-                url.template = baseUrl + templateFolder + '/' + template + '/loading.html';
-                url.css = baseUrl + templateFolder + '/' + template + '/loading.css';
-            };
-
-            buildUrls(template);
 
             var compile = function (tElm, tAttr) {
 
@@ -66,7 +52,7 @@ angular.module('RcmLoading', [])
                     rcmLoadingService.events.on(
                         'rcmLoadingService.loadingStart',
                         function (loadingParams) {
-                            scope.loadingPercent = loadingParams.tracker.getPercent();
+                            scope.loadingPercent = '';
                             scope.loadingMessage = loadingMessage;
                             scope.isLoading = true;
 
@@ -79,7 +65,7 @@ angular.module('RcmLoading', [])
                     rcmLoadingService.events.on(
                         'rcmLoadingService.loadingChange',
                         function (loadingParams) {
-                            scope.loadingPercent = loadingParams.tracker.getPercent();
+                            scope.loadingPercent = loadingParams.tracker.getPercent() + '%';
                             scope.loadingMessage = loadingMessage;
                             scope.isLoading = true;
 
@@ -92,7 +78,7 @@ angular.module('RcmLoading', [])
                     rcmLoadingService.events.on(
                         'rcmLoadingService.loadingComplete',
                         function (loadingParams) {
-                            scope.loadingPercent = loadingParams.tracker.getPercent();
+                            scope.loadingPercent = '';
                             scope.loadingMessage = loadingCompleteMessage;
                             scope.isLoading = false;
 
