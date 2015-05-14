@@ -4,14 +4,75 @@
  */
 var rcmLoading = {
     /**
-     *
+     * defaultConfig
      */
-    defaultConfig: {},
+    defaultConfig: {
+        baseUrl: '/vendor/rcm-loading/dist',
+        templateFolder: '/template',
+        template: 'default',
+        loadingMessage: 'Loading..',
+        loadingCompleteMessage: 'Complete'
+    },
+
+    /**
+     * config
+     */
+    config: {},
+
+    /**
+     * Event names
+     */
+    eventName: {
+        start: 'rcmLoading.start',
+        change: 'rcmLoading.change',
+        complete: 'rcmLoading.complete'
+    },
 
     /**
      *
      */
     serviceInstance: null,
+
+    /**
+     * getConfigValue
+     * @param key
+     * @param defaultValue
+     * @returns {*}
+     */
+    getConfigValue: function (key, defaultValue) {
+
+        if (typeof rcmLoading.config[key] !== 'undefined') {
+            return rcmLoading.config[key]
+        }
+
+        if (typeof defaultValue !== 'undefined') {
+            return defaultValue;
+        }
+
+        if (typeof rcmLoading.defaultConfig[key] !== 'undefined') {
+            return rcmLoading.defaultConfig[key];
+        }
+
+        return null;
+    },
+
+    /**
+     * getTemplateUrl
+     * returns {string}
+     */
+    getTemplateUrl: function (file) {
+
+        if (!file) {
+            file = '';
+        }
+
+        var baseUrl = rcmLoading.getConfigValue('baseUrl');
+        var template = rcmLoading.getConfigValue('template');
+        var templateFolder = rcmLoading.getConfigValue('templateFolder');
+
+        return baseUrl + templateFolder + '/' + template + '/' + file;
+    },
+
 
     /**
      * getServiceInstance
@@ -60,7 +121,7 @@ var rcmLoading = {
      * @param amount
      * @param options
      */
-    setLoading: function(name, amount, options) {
+    setLoading: function (name, amount, options) {
 
         var service = rcmLoading.getServiceInstance();
 
@@ -73,11 +134,11 @@ var rcmLoading = {
      * @param method
      * @param id
      */
-    onLoadingStart: function(method, id) {
+    onLoadingStart: function (method, id) {
 
         var service = rcmLoading.getServiceInstance();
 
-        service.events.on('rcmLoadingService.loadingStart', method, id, true);
+        service.events.on(rcmLoading.eventName.start, method, id, true);
     },
 
     /**
@@ -86,11 +147,11 @@ var rcmLoading = {
      * @param method
      * @param id
      */
-    onLoadingChange: function(method, id) {
+    onLoadingChange: function (method, id) {
 
         var service = rcmLoading.getServiceInstance();
 
-        service.events.on('rcmLoadingService.loadingChange', method, id, true);
+        service.events.on(rcmLoading.eventName.change, method, id, true);
     },
 
     /**
@@ -99,25 +160,12 @@ var rcmLoading = {
      * @param method
      * @param id
      */
-    onLoadingComplete: function(method, id) {
+    onLoadingComplete: function (method, id) {
 
         var service = rcmLoading.getServiceInstance();
 
-        service.events.on('rcmLoadingService.loadingComplete', method, id, true);
+        service.events.on(rcmLoading.eventName.complete, method, id, true);
     }
-};
-
-/**
- * Include this file or code to set the default config values
- * @type {{baseUrl: string, templateFolder: string, template: string, loadingMessage: string, loadingCompleteMessage: string}}
- */
-rcmLoading.defaultConfig = {
-
-    baseUrl: '/vendor/rcm-loading/dist',
-    templateFolder: '/template',
-    template: 'default',
-    loadingMessage: 'Loading..',
-    loadingCompleteMessage: 'Complete'
 };
 
 /**
@@ -131,6 +179,7 @@ rcmLoading.Params = function (options) {
     self.name = null;
     self.amount = 0;
     self.options = null;
+
     self.onChange = function (params) {
     };
     self.onComplete = function (params) {
@@ -411,47 +460,34 @@ rcmLoading.Tracker = function (
 };
 
 /**
- * RcmLoadingService Exposes loading
+ * RcmLoading.Service Exposes and wires up loading and events
  * @require:
  *  RcmEventManager
- * @param config
  * @param rcmLoading
  * @constructor
  */
-rcmLoading.Service = function (config) {
+rcmLoading.Service = function () {
 
     var self = this;
-
-    self.config = {};
 
     self.tracker = null; //;
 
     self.events = new RcmEventManager();
 
-    self.eventNames = {
-        start: 'rcmLoadingService.loadingStart',
-        change: 'rcmLoadingService.loadingChange',
-        complete: 'rcmLoadingService.loadingComplete'
-    };
-
     var onLoadingStart = function (loadingParams) {
-        self.events.trigger(self.eventNames.start, loadingParams);
+        self.events.trigger(rcmLoading.eventName.start, loadingParams);
     };
     var onLoadingChange = function (loadingParams) {
-        self.events.trigger(self.eventNames.change, loadingParams);
+        self.events.trigger(rcmLoading.eventName.change, loadingParams);
     };
     var onLoadingComplete = function (loadingParams) {
-        self.events.trigger(self.eventNames.complete, loadingParams);
+        self.events.trigger(rcmLoading.eventName.complete, loadingParams);
     };
 
     /**
      * init
-     * @param config
      */
-    self.init = function (config) {
-
-        self.config = config;
-
+    self.init = function () {
         self.tracker = new rcmLoading.Tracker(
             onLoadingStart,
             onLoadingChange,
@@ -468,8 +504,6 @@ rcmLoading.Service = function (config) {
     self.setLoading = function (name, amount, options) {
 
         self.tracker.setLoading(name, amount, options);
-
-
     };
 
     /**
@@ -481,40 +515,5 @@ rcmLoading.Service = function (config) {
         return self.tracker;
     };
 
-    /**
-     * getConfigValue
-     * @param key
-     * @param defaultValue
-     * @returns {*}
-     */
-    self.getConfigValue = function (key, defaultValue) {
-
-        if (typeof self.config[key] !== 'undefined') {
-            return self.config[key]
-        }
-
-        return defaultValue;
-    };
-
-    /**
-     * getTemplateUrl
-     * returns {string}
-     */
-    self.getTemplateUrl = function (file) {
-
-        if (!file) {
-            file = '';
-        }
-
-        var baseUrl = self.getConfigValue('baseUrl', '.');
-        var template = self.getConfigValue('template', 'default');
-        var templateFolder = self.getConfigValue(
-            'templateFolder',
-            '/template'
-        );
-
-        return baseUrl + templateFolder + '/' + template + '/' + file;
-    };
-
-    self.init(config);
+    self.init();
 };

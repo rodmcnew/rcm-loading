@@ -1,45 +1,32 @@
 /**
- * RcmLoadingService Exposes loading
+ * RcmLoading.Service Exposes and wires up loading and events
  * @require:
  *  RcmEventManager
- * @param config
  * @param rcmLoading
  * @constructor
  */
-rcmLoading.Service = function (config) {
+rcmLoading.Service = function () {
 
     var self = this;
-
-    self.config = {};
 
     self.tracker = null; //;
 
     self.events = new RcmEventManager();
 
-    self.eventNames = {
-        start: 'rcmLoadingService.loadingStart',
-        change: 'rcmLoadingService.loadingChange',
-        complete: 'rcmLoadingService.loadingComplete'
-    };
-
     var onLoadingStart = function (loadingParams) {
-        self.events.trigger(self.eventNames.start, loadingParams);
+        self.events.trigger(rcmLoading.eventName.start, loadingParams);
     };
     var onLoadingChange = function (loadingParams) {
-        self.events.trigger(self.eventNames.change, loadingParams);
+        self.events.trigger(rcmLoading.eventName.change, loadingParams);
     };
     var onLoadingComplete = function (loadingParams) {
-        self.events.trigger(self.eventNames.complete, loadingParams);
+        self.events.trigger(rcmLoading.eventName.complete, loadingParams);
     };
 
     /**
      * init
-     * @param config
      */
-    self.init = function (config) {
-
-        self.config = config;
-
+    self.init = function () {
         self.tracker = new rcmLoading.Tracker(
             onLoadingStart,
             onLoadingChange,
@@ -56,8 +43,6 @@ rcmLoading.Service = function (config) {
     self.setLoading = function (name, amount, options) {
 
         self.tracker.setLoading(name, amount, options);
-
-
     };
 
     /**
@@ -69,40 +54,5 @@ rcmLoading.Service = function (config) {
         return self.tracker;
     };
 
-    /**
-     * getConfigValue
-     * @param key
-     * @param defaultValue
-     * @returns {*}
-     */
-    self.getConfigValue = function (key, defaultValue) {
-
-        if (typeof self.config[key] !== 'undefined') {
-            return self.config[key]
-        }
-
-        return defaultValue;
-    };
-
-    /**
-     * getTemplateUrl
-     * returns {string}
-     */
-    self.getTemplateUrl = function (file) {
-
-        if (!file) {
-            file = '';
-        }
-
-        var baseUrl = self.getConfigValue('baseUrl', '.');
-        var template = self.getConfigValue('template', 'default');
-        var templateFolder = self.getConfigValue(
-            'templateFolder',
-            '/template'
-        );
-
-        return baseUrl + templateFolder + '/' + template + '/' + file;
-    };
-
-    self.init(config);
+    self.init();
 };

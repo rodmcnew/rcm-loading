@@ -1,21 +1,10 @@
 jQuery(document).ready(
     function () {
 
-        var rcmLoadingService = rcmLoading.getServiceInstance();
         var url = {
-            template: rcmLoadingService.getTemplateUrl('loading.html'),
-            css: rcmLoadingService.getTemplateUrl('loading.css')
+            template: rcmLoading.getTemplateUrl('loading.html'),
+            css: rcmLoading.getTemplateUrl('loading.css')
         };
-
-        var loadingMessage = rcmLoadingService.getConfigValue(
-            'loadingMessage',
-            'Loading..'
-        );
-
-        var loadingCompleteMessage = rcmLoadingService.getConfigValue(
-            'loadingCompleteMessage',
-            'Complete'
-        );
 
         jQuery.get(
             url.template,
@@ -38,7 +27,9 @@ jQuery(document).ready(
 
                 rcmLoading.onLoadingStart(
                     function (loadingParams) {
-                        loaderElm.find('.loading-message').html(loadingMessage);
+                        loaderElm.find('.loading-message').html(
+                            rcmLoading.getConfigValue('loadingMessage')
+                        );
                         loaderElm.show();
                     },
                     'rcmGlobalLoader'
@@ -46,7 +37,10 @@ jQuery(document).ready(
 
                 rcmLoading.onLoadingChange(
                     function (loadingParams) {
-                        loaderElm.find('.loading-message').html(loadingMessage + ' ' + loadingParams.tracker.getPercent() + '%');
+                        loaderElm.find('.loading-message').html(
+                            rcmLoading.getConfigValue('loadingMessage')
+                            + ' ' + loadingParams.tracker.getPercent() + '%'
+                        );
                         loaderElm.show();
                     },
                     'rcmGlobalLoader'
@@ -54,7 +48,9 @@ jQuery(document).ready(
 
                 rcmLoading.onLoadingComplete(
                     function (loadingParams) {
-                        loaderElm.find('.loading-message').html(loadingCompleteMessage);
+                        loaderElm.find('.loading-message').html(
+                            rcmLoading.getConfigValue('loadingCompleteMessage')
+                        );
                         loaderElm.hide();
                     },
                     'rcmGlobalLoader'

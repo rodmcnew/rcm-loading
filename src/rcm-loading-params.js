@@ -9,6 +9,7 @@ rcmLoading.Params = function (options) {
     self.name = null;
     self.amount = 0;
     self.options = null;
+
     self.onChange = function (params) {
     };
     self.onComplete = function (params) {

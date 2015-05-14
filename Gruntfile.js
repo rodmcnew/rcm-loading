@@ -15,7 +15,6 @@ module.exports = function (grunt) {
                     files: {
                         'dist/<%= pkg.name %>.min.js': [
                             'src/rcm-loading.js',
-                            'src/rcm-loading-default-config.js',
                             'src/rcm-loading-params.js',
                             'src/rcm-loading-tracker.js',
                             'src/rcm-loading-service.js'
@@ -39,7 +38,6 @@ module.exports = function (grunt) {
                 dist: {
                     src: [
                         'src/rcm-loading.js',
-                        'src/rcm-loading-default-config.js',
                         'src/rcm-loading-params.js',
                         'src/rcm-loading-tracker.js',
                         'src/rcm-loading-service.js'

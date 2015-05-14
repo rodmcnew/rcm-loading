@@ -6,21 +6,21 @@
 angular.module('RcmLoading', [])
 
     .factory(
-    'rcmLoadingService',
+    'rcmLoading',
     function () {
 
-        return rcmLoading.getServiceInstance();
+        return rcmLoading;
     }
 )
     .directive(
     'rcmGlobalLoader',
     [
-        'rcmLoadingService',
-        function (rcmLoadingService) {
+        'rcmLoading',
+        function (rcmLoading) {
 
             var url = {
-                template: rcmLoadingService.getTemplateUrl('loading.html'),
-                css: rcmLoadingService.getTemplateUrl('loading.css')
+                template: rcmLoading.getTemplateUrl('loading.html'),
+                css: rcmLoading.getTemplateUrl('loading.css')
             };
 
             var compile = function (tElm, tAttr) {
@@ -37,55 +37,45 @@ angular.module('RcmLoading', [])
 
                     scope.cssUrl = url.css;
 
-                    var loadingMessage = rcmLoadingService.getConfigValue(
-                        'loadingMessage',
-                        'Loading..'
-                    );
-
-                    var loadingCompleteMessage = rcmLoadingService.getConfigValue(
-                        'loadingCompleteMessage',
-                        'Complete'
-                    );
-
                     scope.isLoading = false;
 
-                    rcmLoadingService.events.on(
-                        'rcmLoadingService.loadingStart',
+                    rcmLoading.onLoadingStart(
                         function (loadingParams) {
                             scope.loadingPercent = '';
-                            scope.loadingMessage = loadingMessage;
+                            scope.loadingMessage = rcmLoading.getConfigValue(
+                                'loadingMessage'
+                            );
                             scope.isLoading = true;
 
                             scope.safeApply();
                         },
-                        'rcmGlobalLoader',
-                        true
+                        'rcmGlobalLoader'
                     );
 
-                    rcmLoadingService.events.on(
-                        'rcmLoadingService.loadingChange',
+                    rcmLoading.onLoadingChange(
                         function (loadingParams) {
                             scope.loadingPercent = loadingParams.tracker.getPercent() + '%';
-                            scope.loadingMessage = loadingMessage;
+                            scope.loadingMessage = rcmLoading.getConfigValue(
+                                'loadingMessage'
+                            );
                             scope.isLoading = true;
 
                             scope.safeApply();
                         },
-                        'rcmGlobalLoader',
-                        true
+                        'rcmGlobalLoader'
                     );
 
-                    rcmLoadingService.events.on(
-                        'rcmLoadingService.loadingComplete',
+                    rcmLoading.onLoadingComplete(
                         function (loadingParams) {
                             scope.loadingPercent = '';
-                            scope.loadingMessage = loadingCompleteMessage;
+                            scope.loadingMessage = rcmLoading.getConfigValue(
+                                'loadingCompleteMessage'
+                            );
                             scope.isLoading = false;
 
                             scope.safeApply();
                         },
-                        'rcmGlobalLoader',
-                        true
+                        'rcmGlobalLoader'
                     );
                 };
 

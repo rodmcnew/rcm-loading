@@ -4,14 +4,75 @@
  */
 var rcmLoading = {
     /**
-     *
+     * defaultConfig
      */
-    defaultConfig: {},
+    defaultConfig: {
+        baseUrl: '/vendor/rcm-loading/dist',
+        templateFolder: '/template',
+        template: 'default',
+        loadingMessage: 'Loading..',
+        loadingCompleteMessage: 'Complete'
+    },
+
+    /**
+     * config
+     */
+    config: {},
+
+    /**
+     * Event names
+     */
+    eventName: {
+        start: 'rcmLoading.start',
+        change: 'rcmLoading.change',
+        complete: 'rcmLoading.complete'
+    },
 
     /**
      *
      */
     serviceInstance: null,
+
+    /**
+     * getConfigValue
+     * @param key
+     * @param defaultValue
+     * @returns {*}
+     */
+    getConfigValue: function (key, defaultValue) {
+
+        if (typeof rcmLoading.config[key] !== 'undefined') {
+            return rcmLoading.config[key]
+        }
+
+        if (typeof defaultValue !== 'undefined') {
+            return defaultValue;
+        }
+
+        if (typeof rcmLoading.defaultConfig[key] !== 'undefined') {
+            return rcmLoading.defaultConfig[key];
+        }
+
+        return null;
+    },
+
+    /**
+     * getTemplateUrl
+     * returns {string}
+     */
+    getTemplateUrl: function (file) {
+
+        if (!file) {
+            file = '';
+        }
+
+        var baseUrl = rcmLoading.getConfigValue('baseUrl');
+        var template = rcmLoading.getConfigValue('template');
+        var templateFolder = rcmLoading.getConfigValue('templateFolder');
+
+        return baseUrl + templateFolder + '/' + template + '/' + file;
+    },
+
 
     /**
      * getServiceInstance
@@ -60,7 +121,7 @@ var rcmLoading = {
      * @param amount
      * @param options
      */
-    setLoading: function(name, amount, options) {
+    setLoading: function (name, amount, options) {
 
         var service = rcmLoading.getServiceInstance();
 
@@ -73,11 +134,11 @@ var rcmLoading = {
      * @param method
      * @param id
      */
-    onLoadingStart: function(method, id) {
+    onLoadingStart: function (method, id) {
 
         var service = rcmLoading.getServiceInstance();
 
-        service.events.on('rcmLoadingService.loadingStart', method, id, true);
+        service.events.on(rcmLoading.eventName.start, method, id, true);
     },
 
     /**
@@ -86,11 +147,11 @@ var rcmLoading = {
      * @param method
      * @param id
      */
-    onLoadingChange: function(method, id) {
+    onLoadingChange: function (method, id) {
 
         var service = rcmLoading.getServiceInstance();
 
-        service.events.on('rcmLoadingService.loadingChange', method, id, true);
+        service.events.on(rcmLoading.eventName.change, method, id, true);
     },
 
     /**
@@ -99,10 +160,10 @@ var rcmLoading = {
      * @param method
      * @param id
      */
-    onLoadingComplete: function(method, id) {
+    onLoadingComplete: function (method, id) {
 
         var service = rcmLoading.getServiceInstance();
 
-        service.events.on('rcmLoadingService.loadingComplete', method, id, true);
+        service.events.on(rcmLoading.eventName.complete, method, id, true);
     }
 };
