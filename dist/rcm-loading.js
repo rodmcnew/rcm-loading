@@ -109,7 +109,7 @@ var rcmLoading = {
 
 /**
  * Include this file or code to set the default config values
- * @type {{baseUrl: string, templateFolder: string, template: string, loadingMessage: string, loadingCompletMessage: string}}
+ * @type {{baseUrl: string, templateFolder: string, template: string, loadingMessage: string, loadingCompleteMessage: string}}
  */
 rcmLoading.defaultConfig = {
 
@@ -117,7 +117,7 @@ rcmLoading.defaultConfig = {
     templateFolder: '/template',
     template: 'default',
     loadingMessage: 'Loading..',
-    loadingCompletMessage: 'Complete'
+    loadingCompleteMessage: 'Complete'
 };
 
 /**
@@ -141,6 +141,15 @@ rcmLoading.Params = function (options) {
      * @param options
      */
     self.init = function (options) {
+        self.setOptions(options);
+    };
+
+    /**
+     * setOptions
+     * @param options
+     */
+    self.setOptions = function (options) {
+
         if (typeof options.name === 'string') {
             self.name = options.name;
         }
@@ -152,6 +161,9 @@ rcmLoading.Params = function (options) {
         }
         if (typeof options.onComplete === 'function') {
             self.onComplete = options.onComplete;
+        }
+        if (typeof options.message === 'string') {
+            self.message = options.string;
         }
 
         self.options = options;

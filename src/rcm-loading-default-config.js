@@ -1,6 +1,6 @@
 /**
  * Include this file or code to set the default config values
- * @type {{baseUrl: string, templateFolder: string, template: string, loadingMessage: string, loadingCompletMessage: string}}
+ * @type {{baseUrl: string, templateFolder: string, template: string, loadingMessage: string, loadingCompleteMessage: string}}
  */
 rcmLoading.defaultConfig = {
 
@@ -8,5 +8,5 @@ rcmLoading.defaultConfig = {
     templateFolder: '/template',
     template: 'default',
     loadingMessage: 'Loading..',
-    loadingCompletMessage: 'Complete'
+    loadingCompleteMessage: 'Complete'
 };
