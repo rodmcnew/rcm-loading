@@ -10,8 +10,8 @@ var rcmLoading = {
         baseUrl: '/vendor/rcm-loading/dist',
         templateFolder: '/template',
         template: 'default',
-        loadingMessage: 'Loading..',
-        loadingCompleteMessage: 'Complete'
+        loadingMessage: '',
+        loadingCompleteMessage: ''
     },
 
     /**

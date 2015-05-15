@@ -10,8 +10,8 @@ var rcmLoading = {
         baseUrl: '/vendor/rcm-loading/dist',
         templateFolder: '/template',
         template: 'default',
-        loadingMessage: 'Loading..',
-        loadingCompleteMessage: 'Complete'
+        loadingMessage: '',
+        loadingCompleteMessage: ''
     },
 
     /**
@@ -178,10 +178,20 @@ rcmLoading.Params = function (options) {
     var self = this;
     self.name = null;
     self.amount = 0;
+    self.startMessage = '';
     self.options = null;
 
+    /**
+     * onChange
+     * @param params
+     */
     self.onChange = function (params) {
     };
+
+    /**
+     * onComplete
+     * @param params
+     */
     self.onComplete = function (params) {
     };
 
@@ -211,8 +221,8 @@ rcmLoading.Params = function (options) {
         if (typeof options.onComplete === 'function') {
             self.onComplete = options.onComplete;
         }
-        if (typeof options.message === 'string') {
-            self.message = options.string;
+        if (typeof options.startMessage === 'string') {
+            self.startMessage = options.startMessage;
         }
 
         self.options = options;
@@ -223,6 +233,10 @@ rcmLoading.Params = function (options) {
      * @returns {number}
      */
     self.getPercent = function () {
+        // null indicates complete
+        if(self.amount === null){
+            return 100;
+        }
         return Math.round((self.amount * 100))
     };
 
@@ -261,11 +275,27 @@ rcmLoading.Tracker = function (
     self.loadingAmount = 1;
 
     /**
+     * Status message only set on start of loading
+     * @type {string}
+     */
+    self.statusMessage = '';
+
+    /**
      * getPercent
      * @returns {number}
      */
     self.getPercent = function () {
+
         return Math.round((self.loadingAmount * 100))
+    };
+
+    /**
+     * Get a status message
+     * @returns {string}
+     */
+    self.getStatusMessage = function(){
+
+        return self.statusMessage;
     };
 
     /**
@@ -293,6 +323,10 @@ rcmLoading.Tracker = function (
             self.loadingAggregate[name].amount = amount;
         } else {
             self.add(name, amount, options);
+        }
+
+        if(self.loadingAggregate[name].startMessage && amount === 0){
+            self.statusMessage = self.loadingAggregate[name].startMessage;
         }
 
         self.calc();
@@ -378,6 +412,10 @@ rcmLoading.Tracker = function (
                 continue;
             }
 
+            if(self.loadingAggregate[index].amount === null){
+                continue;
+            }
+
             count++;
 
             total = total + self.loadingAggregate[index].amount;
@@ -391,9 +429,12 @@ rcmLoading.Tracker = function (
             if (self.loadingAggregate[index].amount >= 1) {
 
                 completeLoading[index] = self.loadingAggregate[index];
+
                 self.loadingAggregate[index].onComplete(
                     self.loadingAggregate[index]
                 );
+
+                self.loadingAggregate[index].amount = null;
             }
         }
 
@@ -455,6 +496,7 @@ rcmLoading.Tracker = function (
             );
         }
 
+        self.statusMessage = '';
         self.loadingAggregate = {};
     };
 };

@@ -8,10 +8,20 @@ rcmLoading.Params = function (options) {
     var self = this;
     self.name = null;
     self.amount = 0;
+    self.startMessage = '';
     self.options = null;
 
+    /**
+     * onChange
+     * @param params
+     */
     self.onChange = function (params) {
     };
+
+    /**
+     * onComplete
+     * @param params
+     */
     self.onComplete = function (params) {
     };
 
@@ -41,8 +51,8 @@ rcmLoading.Params = function (options) {
         if (typeof options.onComplete === 'function') {
             self.onComplete = options.onComplete;
         }
-        if (typeof options.message === 'string') {
-            self.message = options.string;
+        if (typeof options.startMessage === 'string') {
+            self.startMessage = options.startMessage;
         }
 
         self.options = options;
@@ -53,6 +63,10 @@ rcmLoading.Params = function (options) {
      * @returns {number}
      */
     self.getPercent = function () {
+        // null indicates complete
+        if(self.amount === null){
+            return 100;
+        }
         return Math.round((self.amount * 100))
     };
 

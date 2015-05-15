@@ -19,11 +19,27 @@ rcmLoading.Tracker = function (
     self.loadingAmount = 1;
 
     /**
+     * Status message only set on start of loading
+     * @type {string}
+     */
+    self.statusMessage = '';
+
+    /**
      * getPercent
      * @returns {number}
      */
     self.getPercent = function () {
+
         return Math.round((self.loadingAmount * 100))
+    };
+
+    /**
+     * Get a status message
+     * @returns {string}
+     */
+    self.getStatusMessage = function(){
+
+        return self.statusMessage;
     };
 
     /**
@@ -51,6 +67,10 @@ rcmLoading.Tracker = function (
             self.loadingAggregate[name].amount = amount;
         } else {
             self.add(name, amount, options);
+        }
+
+        if(self.loadingAggregate[name].startMessage && amount === 0){
+            self.statusMessage = self.loadingAggregate[name].startMessage;
         }
 
         self.calc();
@@ -136,6 +156,10 @@ rcmLoading.Tracker = function (
                 continue;
             }
 
+            if(self.loadingAggregate[index].amount === null){
+                continue;
+            }
+
             count++;
 
             total = total + self.loadingAggregate[index].amount;
@@ -149,9 +173,12 @@ rcmLoading.Tracker = function (
             if (self.loadingAggregate[index].amount >= 1) {
 
                 completeLoading[index] = self.loadingAggregate[index];
+
                 self.loadingAggregate[index].onComplete(
                     self.loadingAggregate[index]
                 );
+
+                self.loadingAggregate[index].amount = null;
             }
         }
 
@@ -213,6 +240,7 @@ rcmLoading.Tracker = function (
             );
         }
 
+        self.statusMessage = '';
         self.loadingAggregate = {};
     };
 };

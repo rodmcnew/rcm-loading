@@ -37,9 +37,16 @@ jQuery(document).ready(
 
                 rcmLoading.onLoadingChange(
                     function (loadingParams) {
+                        var percentMsg = '';
+                        var percent = loadingParams.tracker.getPercent();
+                        if(percent > 0){
+                            percentMsg = ' ' + loadingParams.tracker.getPercent() + '%';
+                        }
                         loaderElm.find('.loading-message').html(
+                            //'-' +
                             rcmLoading.getConfigValue('loadingMessage')
-                            + ' ' + loadingParams.tracker.getPercent() + '%'
+                            + percentMsg
+                            //+ '-'
                         );
                         loaderElm.show();
                     },
