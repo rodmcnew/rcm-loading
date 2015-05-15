@@ -56,10 +56,11 @@ angular.module('RcmLoading', [])
                         function (loadingParams) {
 
                             scope.loadingPercent = '';
+                            
                             var percent = loadingParams.tracker.getPercent();
 
                             if(percent > 0){
-                                percentMsg = ' ' + loadingParams.tracker.getPercent() + '%';
+                                scope.loadingPercent = ' ' + loadingParams.tracker.getPercent() + '%';
                             }
 
                             scope.loadingMessage = rcmLoading.getConfigValue(
