@@ -26,10 +26,26 @@ module.exports = function (grunt) {
             },
             copy: {
                 dist: {
-                    expand: true,
-                    cwd: 'src/template',
-                    src: '**',
-                    dest: 'dist/template'
+                    files: [
+                        {
+                            expand: true,
+                            cwd: 'src/template',
+                            src: '**',
+                            dest: 'dist/template'
+                        }
+                    ]
+                }
+            },
+            less: {
+                development: {
+                    options: {
+                        compress: false,
+                        yuicompress: false,
+                        optimization: 2
+                    },
+                    files: {
+                        "dist/template/default/loading.css": "src/template/default/loading.less" // destination file and source file
+                    }
                 }
             },
             concat: {
@@ -52,7 +68,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
     // Default task(s).
-    grunt.registerTask('default', ['uglify', 'copy', 'concat']);
+    grunt.registerTask('default', ['uglify', 'copy', 'less', 'concat']);
 };
