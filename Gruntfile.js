@@ -9,8 +9,7 @@ module.exports = function (grunt) {
                     options: {
                         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
                         mangle: false,
-                        sourceMap: true,
-                        sourceMapName: 'dist/<%= pkg.name %>.map'
+                        sourceMap: true
                     },
                     files: {
                         'dist/<%= pkg.name %>.min.js': [
@@ -19,8 +18,8 @@ module.exports = function (grunt) {
                             'src/rcm-loading-tracker.js',
                             'src/rcm-loading-service.js'
                         ],
-                        'dist/angular-rcm-loading.js': ['src/angular-rcm-loading.js'],
-                        'dist/jquery-loader.js': ['src/jquery-loader.js']
+                        'dist/angular-rcm-loading.min.js': ['src/angular-rcm-loading.js'],
+                        'dist/jquery-loader.min.js': ['src/jquery-loader.js']
                     }
                 }
             },
@@ -32,6 +31,18 @@ module.exports = function (grunt) {
                             cwd: 'src/template',
                             src: '**',
                             dest: 'dist/template'
+                        },
+                        {
+                            expand: true,
+                            cwd: 'src',
+                            src: 'angular-rcm-loading.js',
+                            dest: 'dist'
+                        },
+                        {
+                            expand: true,
+                            cwd: 'src',
+                            src: 'jquery-loader.js',
+                            dest: 'dist'
                         }
                     ]
                 }
