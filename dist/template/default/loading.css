@@ -9,7 +9,6 @@
   /* Just in case */
 }
 .rcm-loading .loading {
-  /*overflow: hidden;*/
   padding-top: 15em;
   position: fixed;
   left: 0;
@@ -28,7 +27,7 @@
   left: -50%;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: .5em;
-  box-shadow: 0.2em 0.2em 0.1em rgba(0, 0, 0, 0.1);
+  box-shadow: 0.2em 0.2em 0.1em rgba(0, 0, 0, 0.2);
 }
 .rcm-loading .loading .loading-container .loading-content .loading-indicator {
   border-radius: 50%;
@@ -47,9 +46,12 @@
 }
 .rcm-loading .loading .loading-container .loading-content .loading-message {
   color: #666666;
-  display: inline-block;
-  margin: auto;
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+  position: relative;
   text-align: center;
+  line-height: 100%;
   width: 100%;
 }
 @-webkit-keyframes rcmloadinganim {
