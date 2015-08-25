@@ -65,7 +65,7 @@ jQuery(document).ready(
                 function (loadingParams) {
                     var percentMsg = '';
                     var percent = loadingParams.tracker.getPercent();
-                    if (percent > 0) {
+                    if (percent > 0 && rcmLoading.getConfigValue('showPercent')) {
                         percentMsg = ' ' + loadingParams.tracker.getPercent() + '%';
                     }
                     loaderElm.find('.loading-message').html(
