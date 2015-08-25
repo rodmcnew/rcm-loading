@@ -1,10 +1,16 @@
 .rcm-loading {
-  background-color: rgba(255, 255, 255, 0);
+  background-color: rgba(255, 255, 255, 0.5);
+  border: medium none;
+  cursor: wait;
+  padding: 0;
   position: fixed;
   top: 0;
   left: 0;
+  margin: 0;
   width: 100%;
   height: 100%;
+  zoom: 1;
+  /* IE fix */
   z-index: 50000;
   /* Just in case */
 }
@@ -13,11 +19,15 @@
   position: fixed;
   left: 0;
   width: 100%;
+  zoom: 1;
+  /* IE fix */
 }
 .rcm-loading .loading .loading-container {
   float: left;
   position: relative;
   left: 50%;
+  zoom: 1;
+  /* IE fix */
 }
 .rcm-loading .loading .loading-container .loading-content {
   background-color: #ffffff;
@@ -28,6 +38,8 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: .5em;
   box-shadow: 0.2em 0.2em 0.1em rgba(0, 0, 0, 0.2);
+  zoom: 1;
+  /* IE fix */
 }
 .rcm-loading .loading .loading-container .loading-content .loading-indicator {
   border-radius: 50%;
@@ -43,6 +55,8 @@
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);
+  zoom: 1;
+  /* IE fix */
 }
 .rcm-loading .loading .loading-container .loading-content .loading-message {
   color: #333333;
@@ -55,13 +69,18 @@
   text-align: center;
   width: 100%;
   height: 1em;
+  zoom: 1;
+  /* IE fix */
 }
 .rcm-loading .loading .loading-container .loading-content .loading-message .loading-indicator-text {
   background-color: rgba(255, 255, 255, 0.9);
+  font-size: 24px;
   -webkit-box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, 0.9);
   -moz-box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, 0.9);
   box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, 0.9);
   padding: 0;
+  zoom: 1;
+  /* IE fix */
 }
 .rcm-loading .loading .loading-container .loading-content .loading-message .loading-message-text {
   background-color: rgba(255, 255, 255, 0.9);
@@ -69,6 +88,8 @@
   -moz-box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, 0.9);
   box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, 0.9);
   padding: 0;
+  zoom: 1;
+  /* IE fix */
 }
 @-webkit-keyframes rcmloadinganim {
   0%,

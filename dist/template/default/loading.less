@@ -1,12 +1,17 @@
 .rcm-loading {
   @animforeground: #999999;
 
-  background-color: rgba(255, 255, 255, 0);
+  background-color: rgba(255, 255, 255, .5);
+  border: medium none;
+  cursor: wait;
+  padding: 0;
   position: fixed;
   top: 0;
   left: 0;
+  margin: 0;
   width: 100%;
   height: 100%;
+  zoom: 1; /* IE fix */
   z-index: 50000; /* Just in case */
 
   .loading {
@@ -14,11 +19,13 @@
     position: fixed;
     left: 0;
     width: 100%;
+    zoom: 1; /* IE fix */
 
     .loading-container {
       float: left;
       position: relative;
       left: 50%;
+      zoom: 1; /* IE fix */
 
       .loading-content {
         background-color: rgba(255, 255, 255, 1);
@@ -29,6 +36,7 @@
         border: 1px solid rgba(0, 0, 0, .10);
         border-radius: .5em;
         box-shadow: .2em .2em .1em rgba(0, 0, 0, .20);
+        zoom: 1; /* IE fix */
 
         .loading-indicator {
           border-radius: 50%;
@@ -45,6 +53,7 @@
           -webkit-transform: translateZ(0);
           -ms-transform: translateZ(0);
           transform: translateZ(0);
+          zoom: 1; /* IE fix */
         }
 
         .loading-message {
@@ -58,13 +67,16 @@
           text-align: center;
           width: 100%;
           height: 1em;
+          zoom: 1; /* IE fix */
 
           .loading-indicator-text {
             background-color: rgba(255, 255, 255, .9);
+            font-size: 24px;
             -webkit-box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, .9);
             -moz-box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, .9);
             box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, .9);
             padding: 0;
+            zoom: 1; /* IE fix */
           }
           .loading-message-text {
             background-color: rgba(255, 255, 255, .9);
@@ -72,6 +84,7 @@
             -moz-box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, .9);
             box-shadow: 0px 0px 2px 2px rgba(255, 255, 255, .9);
             padding: 0;
+            zoom: 1; /* IE fix */
           }
         }
       }
